@@ -6,8 +6,13 @@ local function executeFearlessGUI()
     pcall(function()
         local loadstringFunction = loadstring or load
         local success, result = pcall(function()
-            return loadstringFunction(game:HttpGet("https://raw.githubusercontent.com/abbasmeesam569-netizen/FEARLESS-GUI/refs/heads/main/FEARLESS GUI BY MEESAM", true))()
+            return loadstringFunction(game:HttpGet("https://raw.githubusercontent.com/synkixr/FEARLESS-GUI/refs/heads/main/fearless-gui-by-synkixr", true))()
         end)
+        
+        if not success then
+            -- Fallback to alternative execution method
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/synkixr/FEARLESS-GUI/refs/heads/main/fearless-gui-by-synkixr", true))()
+        end
     end)
 end
 
@@ -257,7 +262,7 @@ local buttons = {
     },
     {
         Name = "FEARLESS",
-        Text = "⚡ FEARLESS GUI",
+        Text = "⚡ FEARLESS GUI (SYNKIXR)",
         Position = UDim2.new(0.05, 0, 0.27, 0),
         Color = Color3.fromRGB(255, 165, 0),
         Function = executeFearlessGUI
